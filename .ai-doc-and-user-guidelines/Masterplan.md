@@ -1,99 +1,117 @@
-# Velo – Master Plan
+# Velo
 
-## 0. Executive Summary
-Velo is a local‑first AI CLI assistant, powered by **llama.cpp** running an OpenAI‑compatible server on your workstation. The MVP delivers four core capabilities—code completion, natural‑language → shell commands, error explanation, and project‑wide refactors—exposed through a minimal CLI and an opt‑in Cursor/VS Code plug‑in. A hybrid two‑stage retrieval pipeline (file‑level → chunk‑level, Tree‑Sitter splits) balances speed with precision, while a hybrid cache layout (`~/.velo/` + `.velo/` per repo) preserves reproducibility without wasting disk. Guided interactive onboarding gives beginners an instant “aha!”, yet all features remain scriptable and deeply configurable for power users.
+**Local‑first AI CLI assistant powered by `llama.cpp` + DSPy**
+
+Velo brings offline large‑language‑model magic right into your terminal and editor. It delivers interactive chat, code completion, natural‑language → shell, error explanations, and project‑wide refactors—all running on your GPU (Vulkan) or CPU, with an optional cloud fallback.
 
 ---
 
-## 1. App Overview & Objectives
-* **Problem → Solution**   Modern devs juggle many tools; switching to browsers or cloud AIs breaks flow. Velo embeds LL‑powered assistance directly in the terminal and editor, offline‑first, with optional cloud fallback.
-* **Primary Goals**
-  1. **<200 ms avg token latency** on commodity hardware (7950X3D+64 GB RAM).
-  2. **Immediate value**: ship a CLI that solves real‑world tasks on day one.
-  3. **Progressive disclosure**: seamless for novices, deep controls for experts.
+## ✨ Features
 
-## 2. Target Audience
-* **Beginners** looking for “explain this stack‑trace” or “what shell command does X?”.
-* **Experienced devs** needing context‑aware refactors, large‑repo completions, and editor integrations.
-* **Teams** that value reproducible per‑repo AI checkpoints without cloud dependencies.
+* **`velo chat`** – multi‑turn REPL with Model Context Protocol (MCP) / function‑calling support (Qwen3, Osmosis‑MCP‑4B, smolLM2, etc.).
+* **`velo complete`** – context‑aware code completion at `FILE:LINE`.
+* **`velo shell`** – translate natural language into ready‑to‑run shell commands (`-y` to auto‑execute).
+* **`velo explain`** – break down error logs and suggest fixes.
+* **`velo refactor`** – project‑wide refactors driven by natural‑language instructions.
+* **Hybrid retrieval (HNSW → Tree‑Sitter chunks)** for fast, precise context.
+* **Vulkan GPU off‑loading** (AMD, NVIDIA, Intel) with automatic CPU fallback.
+* **Built‑in llama‑server Web UI** – chat and inspect responses at [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
 
-## 3. Core Features (v1)
-| Command | Description | Key Notes |
-|---------|-------------|-----------|
-| `velo chat` | **Interactive REPL** (Codex‑CLI style) for multi‑turn conversations, quick prototyping, and agent‑style workflows. | Supports tool calling via **Model Context Protocol (MCP)** and OpenAI function‑calling; auto‑detects local MCP‑capable models such as **osmosis‑mcp‑4b** or **smolLM2**, with graceful fallback to plain chat. |
-| `velo complete` | Fill or extend code at `FILE:LINE`. | Auto‑context via hybrid retrieval and DSPy pipeline. |
-| `velo shell` | NL → shell (with `-y` to auto‑run). | Rich confirm prompt; supports Bash, zsh, MSYS, PowerShell. |
-| `velo explain` | Explain errors from stdin/file. | Summarises, suggests fixes. |
-| `velo refactor` | Project‑wide refactor driven by NL instruction. | Uses AST‑aware patching; optional `--quality high` rerank. ([medium.com](https://medium.com/%40adnanmasood/re-ranking-mechanisms-in-retrieval-augmented-generation-pipelines-an-overview-8e24303ee789?utm_source=chatgpt.com)) |
+---
 
-## 4. High‑Level Technical Stack. High‑Level Technical Stack
-| Layer | Choice | Rationale |
-|-------|--------|-----------|
-| **LLM runtime** | `llama.cpp` (OpenAI‑compat server) ([llama-cpp-python.readthedocs.io](https://llama-cpp-python.readthedocs.io/en/latest/server/?utm_source=chatgpt.com)) | Local inference with **Vulkan GPU off‑loading** (enable via `-DGGML_USE_VULKAN=ON` in CMake or `LLAMA_VULKAN=1 make`) that supports most modern AMD, NVIDIA, and Intel GPUs; automatic fallback to CPU-only if Vulkan isn’t available. Optional cloud routing can be toggled with `--cloud` or `VELO_CLOUD=1`. |
-| **Orchestration** | **DSPy** modules + **Agent sub‑framework** | Declarative pipelines; auto‑tune prompts/weights from few I/O pairs; agent layer mediates MCP/function‑calling for tool invocation. |
-| **Tool‑calling / Agent layer** | **MCP 0.1 + OpenAI function‑calling + Qwen‑Agent templates** (auto‑detects Qwen3, osmosis‑mcp‑4b, smolLM2, etc.) | Enables structured tool calls, code‑interpreter steps, and RAG chains inside `velo chat`; graceful fallback to standard chat when the active model lacks these capabilities. |
-| **CLI framework** | **Typer + Rich** | Auto‑generated help & completions; polished TUI with progress bars. |
-| **Packaging** | PyPI wheel **and** single‑file PyInstaller binary | One‑line install for Python users; friction‑free exe for others. |
-| **Editor plug‑in** | Cursor/VS Code custom endpoint | Minimal code—just point at `localhost:11434`. | framework** | **Typer + Rich** ([typer.tiangolo.com](https://typer.tiangolo.com/tutorial/options-autocompletion/?utm_source=chatgpt.com), [rich.readthedocs.io](https://rich.readthedocs.io/en/stable/progress.html?utm_source=chatgpt.com)) | Auto‑generated help & completions; polished TUI with progress bars. |
-| **Packaging** | PyPI wheel **and** single‑file PyInstaller binary ([pyinstaller.org](https://pyinstaller.org/en/v4.1/usage.html?utm_source=chatgpt.com)) | One‑line install for Python users; friction‑free exe for others. |
-| **Editor plug‑in** | Cursor/VS Code custom endpoint (settings JSON) ([github.com](https://github.com/ggml-org/llama.cpp/discussions/795?utm_source=chatgpt.com)) | Minimal code—just point at `localhost:11434`. |
+## 📦 Installation
 
-## 5. Conceptual Data & Retrieval Model
-* **Two‑stage retrieval**: HNSW file embeddings → Tree‑Sitter chunk embeddings; optional cross‑encoder rerank. ([medium.com](https://medium.com/%40joe_30979/mastering-code-chunking-for-retrieval-augmented-generation-66660397d0e0?utm_source=chatgpt.com), [medium.com](https://medium.com/%40adnanmasood/re-ranking-mechanisms-in-retrieval-augmented-generation-pipelines-an-overview-8e24303ee789?utm_source=chatgpt.com))
-* **Embeddings**: E5‑large‑v2 (384‑dim) for density; can swap models per project.
-* **Storage**:
-  * Global: models, tokenizer, coarse index (~8–12 GB).
-  * Project: fine embeddings, DSPy checkpoints (~50–300 MB).   ([arxiv.org](https://arxiv.org/html/2410.16229v1?utm_source=chatgpt.com))
+| Method                  | Command                                                                   |
+| ----------------------- | ------------------------------------------------------------------------- |
+| **Python (pipx)**       | `pipx install velo-ai`                                                    |
+| **Python (virtualenv)** | `pip install velo-ai`                                                     |
+| **Standalone binary**   | Download the latest release for your OS and place `velo` on your `$PATH`. |
 
-## 6. User Interface & Experience
-* **First‑run**: running `velo` with no args launches an interactive wizard (skippable via `--defaults`). Wizard seeds global cache and creates a `.velo/config.toml`. ([appcues.com](https://www.appcues.com/blog/customer-onboarding-checklist?utm_source=chatgpt.com))
-* **Help system**: `velo --help` collapses advanced flags under “More options ▼”.
-* **Colors**: Rich‑style output on by default; respect `NO_COLOR` env.
-* **Verbosity**: `-q`, default, `-v`, `-vv`; `--json` for machine parsing.
+> **Requires**: \~8 GB disk for model weights. 16 GB RAM (CPU) or 8 GB VRAM (GPU) recommended.
 
-## 7. Security & Privacy Considerations
-* No network calls unless `VELO_CLOUD=1` or `--cloud` flag set.
-* All embeddings stored locally; repo overrides commit‑friendly but can be `.gitignore`’d.
-* Shell‑execution guard: auto‑runs only with `-y`; otherwise prints command for user confirmation.
+### 1 — Start the llama.cpp server
 
-## 8. Development Phases / Milestones
-1. **M0 – Scaffold (Week 1)**
-   * Typer CLI skeleton & `velo init` wizard.
-   * Global cache folder & settings loader.
-2. **M1 – Core commands (Weeks 2–3)**
-   * Implement retrieval pipeline & `complete`/`shell`/`chat` commands.
-   * Basic error explain & refactor skeleton.
-3. **M2 – Editor integration (Week 4)**
-   * VS Code / Cursor settings template.
-4. **M3 – Quality & UX polish (Weeks 5–6)**
-   * Cross‑encoder rerank option, progress bars, colored diffs.
-5. **M4 – Optional cloud gateway (Week 7)**
-   * Simple env flag to redirect to provider API.
+```bash
+# Example: launch llama-server with Vulkan + OpenAI API + Web UI
+./server --gpu vulkan --api-server --host 127.0.0.1 --port 8000 \
+        --chat-ui --model /path/to/model.gguf &
+```
 
-## 9. Potential Challenges & Mitigations
-| Risk | Mitigation |
-|------|-----------|
-| Large repos slow first‑build | Lazy chunking; caching; progress feedback. |
-| GPU variance across users | Default to CPU‑only Q4_K_M; auto‑detect GPU flag. |
-| Windows MSYS path quirks | Normalize paths early; add PowerShell tests in CI. |
+This command exposes two endpoints:
 
-## 10. Future Expansion Possibilities
-* **Git commit hooks** for automated lint / PR comments.
-* **Web UI** overlay (Streamlit/Textual) for interactive chat.
-* **Code Interpreter sessions** via Qwen‑Agent templates for local data analysis and notebook‑style experimentation.
-* **Browser automation / Chrome‑extension flows** powered by Qwen‑Agent, enabling scripted form filling, scraping, and end‑to‑end workflow demos.
-* **Multi‑model routing**: leverage Mixtral‑MoE or GPT‑4o via cloud for heavy tasks.
-* **Sparse + dense retrieval**: bring BM25 into hybrid index for rare tokens.
+* **API** at `http://127.0.0.1:8000/v1/*` (used by Velo)
+* **Web UI** at `http://127.0.0.1:8080/` (great for quick tests)
+  This command exposes two endpoints:
+* **API** at `http://127.0.0.1:8000/v1/*` (used by Velo)
+* **Web UI** at `http://127.0.0.1:8080/` (great for quick tests)
 
-## 11. References. References
-* Typer auto‑completion docs ([typer.tiangolo.com](https://typer.tiangolo.com/tutorial/options-autocompletion/?utm_source=chatgpt.com))
-* Rich progress bars ([rich.readthedocs.io](https://rich.readthedocs.io/en/stable/progress.html?utm_source=chatgpt.com))
-* PyInstaller usage guide ([pyinstaller.org](https://pyinstaller.org/en/v4.1/usage.html?utm_source=chatgpt.com))
-* llama‑cpp OpenAI server docs ([llama-cpp-python.readthedocs.io](https://llama-cpp-python.readthedocs.io/en/latest/server/?utm_source=chatgpt.com))
-* DSPy GitHub repo ([github.com](https://github.com/stanfordnlp/dspy?utm_source=chatgpt.com))
-* RAG re‑rank overview ([medium.com](https://medium.com/%40adnanmasood/re-ranking-mechanisms-in-retrieval-augmented-generation-pipelines-an-overview-8e24303ee789?utm_source=chatgpt.com))
-* Tree‑Sitter chunking article ([medium.com](https://medium.com/%40joe_30979/mastering-code-chunking-for-retrieval-augmented-generation-66660397d0e0?utm_source=chatgpt.com))
-* Onboarding best practices (time‑to‑value) ([appcues.com](https://www.appcues.com/blog/customer-onboarding-checklist?utm_source=chatgpt.com))
-* PyInstaller exe tutorial ([medium.com](https://medium.com/%40moraneus/crafting-a-standalone-executable-with-pyinstaller-f9a99ea24432?utm_source=chatgpt.com))
-* CONAN code RAG benchmark ([arxiv.org](https://arxiv.org/html/2410.16229v1?utm_source=chatgpt.com))
+### 2 — Enable Vulkan (recommended)
 
+```bash
+# Linux / macOS (CMake build)
+cmake -B build -DGGML_USE_VULKAN=ON .. && cmake --build build -j
+
+# Windows / MSYS2 (make build)
+LLAMA_VULKAN=1 make -j
+```
+
+Velo auto‑detects the `llama.cpp` API at `http://localhost:8000`; override with `VELO_API_URL` if you choose another port.
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# 1) First run – launch the interactive wizard
+velo                     # seeds caches, picks a default model
+
+# 2) Chat with the assistant
+velo chat
+
+# 3) Ask for a shell command
+velo shell "list largest git objects" -y
+
+# 4) Complete code at a cursor
+velo complete src/foo.py:120
+```
+
+The wizard writes per‑project config to `.velo/` and stores heavy assets under `~/.velo/`.
+
+---
+
+## 🔧 Configuration
+
+* `~/.velo/config.toml` – global defaults (model path, retrieval knobs).
+* `<repo>/.velo/config.toml` – per‑project overrides.
+* CLI flags always override config files.
+
+| Flag                          | Purpose                                           |
+| ----------------------------- | ------------------------------------------------- |
+| `--model /path/to/model.gguf` | Use a specific local model.                       |
+| `--cloud`                     | Route requests to cloud provider (if configured). |
+| `--top-files N`               | Adjust coarse retrieval width (default 8).        |
+| `--quality high`              | Enable cross‑encoder rerank for refactors.        |
+| `--json`                      | Machine‑parseable output.                         |
+
+---
+
+## 🗺️ Roadmap
+
+1. VS Code/Cursor inline integration.
+2. Git commit hooks for auto‑lint and PR comments.
+3. Web UI overlay (Streamlit/Textual).
+4. Code‑Interpreter & Browser‑automation modes via Qwen‑Agent.
+
+See the full **[Master Plan](./Masterplan)** for details.
+
+---
+
+## 🤝 Contributing
+
+PRs and discussions welcome! Please read `CONTRIBUTING.md` (coming soon) and open an issue to get started.
+
+---
+
+## 📄 License
+
+Velo is released under the MIT License. See `LICENSE` for more information.
