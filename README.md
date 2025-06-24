@@ -1,34 +1,50 @@
 # Velo
 
-**Local‑first AI CLI assistant powered by **``** + DSPy**
+**Local‑first AI CLI assistant powered by `llama.cpp` + DSPy**
 
-Velo brings offline large‑language‑model magic right into your terminal and editor. It delivers interactive chat, code completion, natural‑language → shell, error explanations, and project‑wide refactors—all running on your GPU (Vulkan) or CPU, with an optional cloud fallback.
+Velo brings offline LLM magic straight to your terminal and editor. It delivers interactive chat, code completion, NL → shell, error explanations, and project‑wide refactors—all on your GPU (Vulkan) or CPU, with optional cloud fallback.
 
 ---
 
 ## ✨ Features
 
-- `` – multi‑turn REPL with Model Context Protocol (MCP) / function‑calling support (Qwen3, Osmosis‑MCP‑4B, smolLM2, etc.).
-- `` – context‑aware code completion at `FILE:LINE`.
-- `` – translate natural language into ready‑to‑run shell commands (`-y` to auto‑execute).
-- `` – break down error logs and suggest fixes.
-- `` – project‑wide refactors driven by natural‑language instructions.
-- **Hybrid retrieval (HNSW → Tree‑Sitter chunks)** for fast, precise context.
-- **Vulkan GPU off‑loading** (AMD, NVIDIA, Intel) with automatic CPU fallback.
+* **`velo chat`** – multi‑turn REPL with MCP / function‑calling (Qwen3, Osmosis‑MCP‑4B, smolLM2, …).
+* **`velo complete`** – context‑aware code completion at `FILE:LINE`.
+* **`velo shell`** – translate natural language into shell commands (`-y` to auto‑run).
+* **`velo explain`** – break down error logs and suggest fixes.
+* **`velo refactor`** – project‑wide refactors from plain‑language instructions.
+* **Hybrid retrieval (HNSW → Tree‑Sitter chunks)** for fast, precise context.
+* **Vulkan GPU off‑loading** (AMD, NVIDIA, Intel) with CPU fallback.
+* **Built‑in llama‑server Web UI** – chat and inspect responses at [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
 
 ---
 
 ## 📦 Installation
 
-| Method                  | Command                                                                   |
-| ----------------------- | ------------------------------------------------------------------------- |
-| **Python (pipx)**       | `pipx install velo-ai`                                                    |
-| **Python (virtualenv)** | `pip install velo-ai`                                                     |
-| **Standalone binary**   | Download the latest release for your OS and place `velo` on your `$PATH`. |
+| Method                  | Command                                                            |
+| ----------------------- | ------------------------------------------------------------------ |
+| **Python (pipx)**       | `pipx install velo-ai`                                             |
+| **Python (virtualenv)** | `pip install velo-ai`                                              |
+| **Standalone binary**   | Download the release for your OS and place `velo` on your `$PATH`. |
 
-> **Requires**: \~8 GB disk for model weights. 16 GB RAM (CPU) or 8 GB VRAM (GPU) recommended.
+> **Requires** ≈ 8 GB disk for weights. 16 GB RAM (CPU) or 8 GB VRAM (GPU) recommended.
 
-### Enable Vulkan (recommended)
+### 1 — Start the `llama-server`
+
+```bash
+# Launch llama-server with Vulkan, OpenAI API, and Web UI
+./server --gpu vulkan \
+        --api-server --host 127.0.0.1 --port 8080 \
+        --chat-ui \
+        --model /path/to/model.gguf &
+```
+
+This exposes:
+
+* **API** → `http://127.0.0.1:8080/v1/*` (used by Velo)
+* **Web UI** → `http://127.0.0.1:8080/`
+
+### 2 — Enable Vulkan (optional but recommended)
 
 ```bash
 # Linux / macOS (CMake build)
@@ -38,15 +54,15 @@ cmake -B build -DGGML_USE_VULKAN=ON .. && cmake --build build -j
 LLAMA_VULKAN=1 make -j
 ```
 
-Velo auto‑detects the `llama.cpp` server at `http://localhost:11434`; set `VELO_API_URL` to override.
+Velo auto‑detects the API at `http://localhost:8080`; override with `VELO_API_URL` if using a different host/port.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start
 
 ```bash
 # 1) First run – launch the interactive wizard
-velo                     # seeds caches, picks a default model
+velo               # seeds caches, chooses a default model
 
 # 2) Chat with the assistant
 velo chat
@@ -64,28 +80,29 @@ The wizard writes per‑project config to `.velo/` and stores heavy assets under
 
 ## 🔧 Configuration
 
-- `~/.velo/config.toml` – global defaults (model path, retrieval knobs).
-- `<repo>/.velo/config.toml` – per‑project overrides.
-- CLI flags always override config files.
+Files:
 
-Common flags:
+* `~/.velo/config.toml` – global defaults (model path, retrieval knobs).
+* `<repo>/.velo/config.toml` – per‑project overrides.
 
-| Flag                          | Purpose                                           |
-| ----------------------------- | ------------------------------------------------- |
-| `--model /path/to/model.gguf` | Use a specific local model.                       |
-| `--cloud`                     | Route requests to cloud provider (if configured). |
-| `--top-files N`               | Adjust coarse retrieval width (default 8).        |
-| `--quality high`              | Enable cross‑encoder rerank for refactors.        |
-| `--json`                      | Machine‑parseable output.                         |
+CLI flags override config.  Common examples:
+
+| Flag                          | Purpose                                          |
+| ----------------------------- | ------------------------------------------------ |
+| `--model /path/to/model.gguf` | Use a specific local model                       |
+| `--cloud`                     | Route requests to cloud provider (if configured) |
+| `--top-files N`               | Adjust coarse retrieval width (default 8)        |
+| `--quality high`              | Enable cross‑encoder rerank for refactors        |
+| `--json`                      | Output machine‑parseable JSON                    |
 
 ---
 
 ## 🗺️ Roadmap
 
-1. VS Code/Cursor inline integration.
-2. Git commit hooks for auto‑lint and PR comments.
-3. Web UI overlay (Streamlit/Textual).
-4. Code‑Interpreter & Browser‑automation modes via Qwen‑Agent.
+1. VS Code/Cursor inline integration
+2. Git hooks for auto‑lint / PR comments
+3. Web UI overlay (Streamlit/Textual)
+4. Code‑Interpreter & browser‑automation via Qwen‑Agent
 
 See the full [Master Plan](.ai-doc-and-user-guidelines/Masterplan.md) for details.
 
@@ -93,10 +110,10 @@ See the full [Master Plan](.ai-doc-and-user-guidelines/Masterplan.md) for detail
 
 ## 🤝 Contributing
 
-PRs and discussions welcome!  Please read `CONTRIBUTING.md` (coming soon) and open an issue to get started.
+PRs and discussions welcome!  Please read `CONTRIBUTING.md` (coming soon) before starting.
 
 ---
 
 ## 📄 License
 
-Velo is released under the MIT License.  See `LICENSE` for more information.
+Velo is released under the MIT License.  See `LICENSE` for details.
