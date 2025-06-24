@@ -87,7 +87,7 @@ Common flags:
 3. Web UI overlay (Streamlit/Textual).
 4. Code‑Interpreter & Browser‑automation modes via Qwen‑Agent.
 
-See the full [Master Plan](.ai-doc-and-user-guidelines/Masterplan) for details.
+See the full [Master Plan](.ai-doc-and-user-guidelines/Masterplan.md) for details.
 
 ---
 
