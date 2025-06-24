@@ -15,7 +15,7 @@ Velo brings offline LLM magic straight to your terminal and editor. It delivers 
 - `` – project‑wide refactors from plain‑language instructions.
 - **Hybrid retrieval (HNSW → Tree‑Sitter chunks)** for fast, precise context.
 - **Vulkan GPU off‑loading** (AMD, NVIDIA, Intel) with CPU fallback.
-- **Built‑in llama‑server Web UI** – chat and inspect responses at [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
+- **Built‑in llama‑server Web UI** – chat and inspect responses at [http://127.0.0.1:8080/].
 
 ---
 
