@@ -87,7 +87,7 @@ Common flags:
 3. Web UI overlay (Streamlit/Textual).
 4. Code‑Interpreter & Browser‑automation modes via Qwen‑Agent.
 
-See the full [Master Plan](./Masterplan) for details.
+See the full [Master Plan](.ai-doc-and-user-guidelines/Masterplan) for details.
 
 ---
 
@@ -100,4 +100,3 @@ PRs and discussions welcome!  Please read `CONTRIBUTING.md` (coming soon) and op
 ## 📄 License
 
 Velo is released under the MIT License.  See `LICENSE` for more information.
-
