@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-hidden bg-[#14162b]">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dawn Petals — Hero Section</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html, body { height: 100%; overflow: hidden; }
+      body { background: #14162b; }
+      .hero-fade {
+        animation: fadein 2.5s cubic-bezier(0.65,0,0.35,1);
+      }
+      @keyframes fadein {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .sun-glow {
+        filter: blur(38px) brightness(1.12) saturate(1.4);
+        mix-blend-mode: lighten;
+        pointer-events: none;
+        animation: pulse-glow 3.2s ease-in-out infinite alternate;
+      }
+      @keyframes pulse-glow {
+        from { opacity: 0.55; transform: scale(0.95);}
+        to { opacity: 1; transform: scale(1.12);}
+      }
+      .petal-float {
+        animation: petalFloat 12s linear infinite alternate;
+      }
+      @keyframes petalFloat {
+        0% { transform: translateY(0) scale(1);}
+        40% { transform: translateY(-22px) scale(1.05);}
+        100% { transform: translateY(0) scale(1);}
+      }
+      .parallax-bg {
+        animation: parallaxMove 14s ease-in-out infinite alternate;
+      }
+      @keyframes parallaxMove {
+        0% { transform: scale(1.03) translateY(0);}
+        100% { transform: scale(1.10) translateY(-30px);}
+      }
+      .gradient-animate {
+        background: radial-gradient(ellipse at 70% 22%, rgba(255,197,222,0.32) 0%, rgba(68,95,153,0.0) 65%),
+                    linear-gradient(120deg, rgba(180,190,255,0.20) 0%, rgba(182,131,255,0.12) 100%);
+        animation: gradientFade 8s ease-in-out infinite alternate;
+      }
+      @keyframes gradientFade {
+        0% { opacity: 0.82;}
+        100% { opacity: 1;}
+      }
+    </style>
+  </head>
+  <body class="overflow-hidden relative min-h-screen w-screen flex items-center justify-start bg-[#232649] selection:bg-pink-100/40">
+    <!-- Background Image Layer -->
+    <img src="/mnt/data/Screenshot 2025-06-27 141536.png" alt="Dreamy dawn with flowers and butterfly"
+      class="absolute inset-0 w-full h-full object-cover parallax-bg z-0 select-none pointer-events-none" draggable="false" />
+
+    <!-- Animated dreamy overlay gradients -->
+    <div class="absolute inset-0 gradient-animate pointer-events-none z-10"></div>
+    <div class="absolute left-2/3 top-1/5 w-[340px] h-[340px] sun-glow rounded-full bg-[#ffd4ef]/60 z-20"></div>
+    <div class="absolute right-0 bottom-0 w-[280px] h-[120px] blur-3xl bg-[#a1e2fc]/30 z-20"></div>
+    <div class="absolute left-1/4 top-[40%] w-[160px] h-[70px] blur-2xl bg-[#dab0ff]/30 z-20"></div>
+    <!-- SVG butterfly motif, animated -->
+    <svg class="absolute right-1/4 top-1/2 w-20 h-20 opacity-80 z-30 petal-float" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="12" ry="28" fill="#fff8" />
+      <path d="M40 54 Q58 44 74 56 Q60 56 52 50 Q50 60 40 54 Z" fill="#f7cfff88" />
+      <ellipse cx="40" cy="36" rx="8" ry="12" fill="#fffdeef0" />
+      <ellipse cx="38" cy="38" rx="2.5" ry="4" fill="#f8fafc" />
+      <ellipse cx="42" cy="38" rx="2.5" ry="4" fill="#f6f7fa" />
+      <ellipse cx="40" cy="52" rx="3.5" ry="7" fill="#fff3" />
+    </svg>
+
+    <!-- Navbar -->
+    <nav class="absolute top-0 left-0 w-full z-40 flex items-center justify-between px-10 pt-8 text-white/80">
+      <div class="flex items-center space-x-4">
+        <svg class="w-7 h-7 opacity-80" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="16" fill="#fff" fill-opacity="0.18"/>
+          <path d="M16 6 L18 14 H26 L19 18 L21 26 L16 21 L11 26 L13 18 L6 14 H14 Z"
+                fill="#f8fafc" fill-opacity="0.7"/>
+        </svg>
+        <a href="#" class="font-manrope font-semibold tracking-wide text-lg hover:text-white/95 transition">Origins</a>
+        <a href="#" class="font-manrope font-semibold tracking-wide text-lg hover:text-white/95 transition">Records</a>
+        <a href="#" class="font-manrope font-semibold tracking-wide text-lg hover:text-white/95 transition">Community</a>
+      </div>
+      <div>
+        <select class="bg-white/10 backdrop-blur px-3 py-1 rounded font-manrope font-medium text-base text-slate-200 border border-white/20 focus:outline-none shadow-sm">
+          <option>EN</option>
+          <option>FR</option>
+          <option>JP</option>
+        </select>
+      </div>
+    </nav>
+
+    <!-- Main Text Block -->
+    <section class="relative z-30 flex flex-col items-start max-w-2xl pl-16 md:pl-24 lg:pl-32 pt-40 pb-20">
+      <h1 class="font-serif font-bold text-[2.9rem] leading-tight md:text-[3.9rem] mb-4 text-white drop-shadow-[0_6px_24px_rgba(170,170,255,0.09)]" style="font-family:'Libre Caslon Text',serif">
+        In the Garden of Dawn, Petals Remember
+      </h1>
+      <p class="font-manrope text-lg md:text-xl text-white/80 max-w-lg mb-7" style="font-family:'Manrope',sans-serif">
+        Morning dew shivers in pastel air. A gentle flutter, hope alights—each petal a memory, each breeze a new beginning.
+      </p>
+      <a href="#" class="inline-block bg-gradient-to-r from-pink-300 via-indigo-300 to-blue-200 text-indigo-900 font-manrope font-semibold px-7 py-3 rounded-2xl shadow-lg hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-pink-200/50 transition text-lg backdrop-blur-sm">
+        Enter the Field
+      </a>
+    </section>
+
+    <!-- Narrative Side Label -->
+    <div class="absolute right-4 top-1/3 z-40 flex flex-col items-center">
+      <span class="font-manrope uppercase tracking-widest text-[0.85rem] text-white/60 rotate-90 origin-bottom">
+        Field Entry — Chapter One
+      </span>
+    </div>
+
+    <!-- Corner Details -->
+    <div class="absolute left-6 bottom-4 z-50 text-white/60 text-xs font-manrope">
+      ✦ Founded in Stillness, 2025
+    </div>
+    <div class="absolute right-6 bottom-4 z-50 text-white/60 text-xs font-manrope">
+      © Dawn Petals Studio
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+llama.cpp version: 84d1740c8c22f7ed...
+Build system: CMake
+CMake flags: -DLLAMA_VULKAN=ON -DLLAMA_CUDA=OFF -DCMAKE_BUILD_TYPE=Release
+CMakeCache.txt relevant lines:
+LLAMA_VULKAN:BOOL=ON
+LLAMA_CUDA:BOOL=OFF
+CMAKE_BUILD_TYPE:STRING=Release
+CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++
+Model: models/llama-2-7b-vulkan.Q4_K_M.gguf
+Run command: ./server --gpu vulkan --api-server
+GPU: AMD Radeon RX 6750 XT
+OS: Linux myhost 6.8.0-31-generic #33 SMP PREEMPT_DYNAMIC Fri ...
