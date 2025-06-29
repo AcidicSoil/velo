@@ -185,3 +185,14 @@ velo/
 ├── LICENSE
 └── masterplan.md           # The AI-oriented masterplan doc
 ```
+
+---
+
+### **Why This Works for Both Developers and AI Assistants**
+- **Explicit structure:** Easy for AIs to parse paths, purposes, and extension points.
+- **Manifest-driven plugins:** Auto-docs and safety for human and AI contributors.
+- **Clear onboarding:** Steps for setup, build, and plugin development.
+- **Directs users to architecture/masterplan docs:** Keeps humans and agents aligned.
+- **Emphasizes privacy and security up front.**
+
+---
