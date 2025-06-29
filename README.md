@@ -1,10 +1,5 @@
-
-* * *
-
 📝 **README.md (Developer & AI-Friendly)**
-------------------------------------------
 
-````markdown
 # 🚀 velo
 
 **Privacy-first AI CLI assistant for developers, powered by local LLMs and extensible with Python plugins.**
@@ -61,7 +56,7 @@ _(Or use provided scripts in `scripts/` for multi-platform builds.)_
 
 See `plugins/example-plugin/` for a starting template.
 
-* * *
+
 
 Repo Structure
 --------------
