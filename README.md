@@ -178,7 +178,7 @@ velo/
 ├── go.sum
 ├── README.md
 ├── LICENSE
-└── masterplan.md           # The AI-oriented masterplan doc
+└── MASTERPLAN.md           # The AI-oriented masterplan doc
 ```
 
 ---
