@@ -8,3 +8,9 @@ wheels/
 
 # Virtual environments
 .venv
+.archived/
+docs
+.vscode
+.llama.cpp_config
+.gemini
+.cursor_docs
