@@ -6,11 +6,16 @@ dist/
 wheels/
 *.egg-info
 
+
 # Virtual environments
 .venv
 .archived/
-docs
 .vscode
 .llama.cpp_config
-.gemini
 .cursor_docs
+.env
+
+# Gemini
+.gemini/
+
+# Cursor

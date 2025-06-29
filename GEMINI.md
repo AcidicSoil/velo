@@ -246,4 +246,4 @@ It applies to all code, config, prompts, and documentation in the repository.
 > ⚠️  Always defer to `GEMINI.md` if other guides disagree.
 > File an issue if clarification is needed.
 > For any developer context or setup task, check devcontext before creating or changing workflow.
-
+> Also read .cursorrules .cursor/rules/* for additional rules before proceeding.
