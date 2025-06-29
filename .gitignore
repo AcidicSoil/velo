@@ -19,3 +19,9 @@ wheels/
 .gemini/
 
 # Cursor
+
+# ai-doc-and-user-guidelines
+.ai-doc-and-user-guidelines/
+
+# docs
+docs/
