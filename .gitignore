@@ -5,23 +5,11 @@ build/
 dist/
 wheels/
 *.egg-info
-
-
-# Virtual environments
 .venv
-.archived/
-.vscode
+
+
 .llama.cpp_config
 .cursor_docs
 .env
 
-# Gemini
 .gemini/
-
-# Cursor
-
-# ai-doc-and-user-guidelines
-.ai-doc-and-user-guidelines/
-
-# docs
-docs/
