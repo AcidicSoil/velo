@@ -115,16 +115,13 @@ fi
 # =============================================================================
 # LM Studio API config (adapted for container)
 # =============================================================================
-export OPENAI_API_KEY="${OPENAI_API_KEY:-1234}"
-export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://host.docker.internal:1234/v1}"
-export OLLAMA_MODEL="${OLLAMA_MODEL:-osmosis-ai/osmosis-mcp-4b@q4_k_s}"
+#export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://host.docker.internal:1234/v1}"
 
 # =============================================================================
 # Gemini CLI Configuration
 # =============================================================================
 export GEMINI_CODE_ASSIST="${GEMINI_CODE_ASSIST:-true}"
-export GEMINI_API_KEY="${GEMINI_API_KEY}"
-export GEMINI_MODEL="${GEMINI_MODEL:-gemini-2.0-flash-exp}"
+#export GEMINI_MODEL="${GEMINI_MODEL:-gemini-2.0-flash-exp}"
 
 # =============================================================================
 # Python Virtual Environment for DSPy
@@ -152,9 +149,6 @@ alias velo-analyze="python3 /workspace/scripts/analyze.py"
 alias velo-test="python3 /workspace/scripts/test.py"
 alias velo-generate="python3 /workspace/scripts/generate.py"
 alias velo-explain="python3 /workspace/scripts/explain.py"
-
-# Enhanced codex alias for container environment
-alias codex='codex --provider ollama'
 
 # Gemini CLI with common options
 alias gemini-analyze='gemini -p "analyze the project structure"'
@@ -189,6 +183,7 @@ check_tools() {
 }
 
 # Function to show velo project status
+# Function to show velo project status
 velo_status() {
     echo "🚀 Velo Project Status"
     echo "====================="
@@ -196,8 +191,6 @@ velo_status() {
     echo "Python environment: $(which python3)"
     echo "Virtual env: ${VIRTUAL_ENV:-'Not activated'}"
     echo "Git branch: $(git branch --show-current 2>/dev/null || echo 'Not a git repo')"
-    echo "Gemini model: ${GEMINI_MODEL}"
-    echo "LM Studio URL: ${OLLAMA_BASE_URL}"
     echo ""
 
     if [ -f "/workspace/MASTERPLAN.md" ]; then

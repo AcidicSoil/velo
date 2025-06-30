@@ -6,8 +6,6 @@
     "respectGitIgnore": true,
     "enableRecursiveFileSearch": true
   },
-  "toolDiscoveryCommand": "bin/get_velo_tools",
-  "toolCallCommand": "bin/call_velo_tool",
   "coreTools": ["ReadFileTool", "GlobTool", "SearchText", "ReadManyFilesTool", "WriteFileTool", "LSTool", "ShellTool", "WebFetchTool", "GrepTool", "EditTool"],
   "bugCommand": {
     "urlTemplate": "https://claytonbivens1.atlassian.net/jira/software/projects/ECS/issues/create"
