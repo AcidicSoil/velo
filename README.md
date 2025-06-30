@@ -1,12 +1,3 @@
-Great decision to clarify your stack early—**switching to TypeScript** will make your CLI more approachable for many devs and speed up plugin/extension work, especially with strong typing and NPM ecosystem.
-
-You *can* share the old Go version if you’d like targeted migration tips, but it’s not required for a new `README.md`. I’ll generate a README that is **aligned with your masterplan.md, reflects a TypeScript-first project**, and sets clear expectations for users and contributors (including AI/LLM assistant context).
-
----
-
-## AI-Optimized `README.md` for Velo
-
-````markdown
 # Velo
 
 **Velo** is a conversational CLI assistant for developers, designed to automate, analyze, and enhance coding workflows using AI and modern language tooling. Powered by a local-first architecture, Velo combines the flexibility of TypeScript with a Python-based plugin system and optional LLM integration.
@@ -191,5 +182,3 @@ velo explain app.py
 
 > **For AI assistants and LLM integrations:**
 > Please refer to [masterplan.md](masterplan.md) for context, design philosophy, and up-to-date feature definitions.
-
----
