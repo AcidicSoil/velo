@@ -30,6 +30,7 @@ This is the single source of truth for repo-wide conventions, coding practices, 
   # Example prompt:
   How should I structure the plugin API for new transport backends?
   ```
+
 * **Code Mode:**
   Request or provide concrete code changes, patches, or file rewrites.
 
@@ -112,6 +113,8 @@ This is the single source of truth for repo-wide conventions, coding practices, 
 
 * **Secrets Management:**
   Never hard-code secrets, tokens, or credentials.
+  All secrets must be passed via environment variables prefixed with `VELO_`.
+  Do not store secrets in configuration files.
 * **Configuration:**
   All secrets must be passed via environment variables or config files (excluded from git).
 * **Telemetry:**
