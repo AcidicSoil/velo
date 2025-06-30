@@ -11,5 +11,3 @@ wheels/
 .llama.cpp_config
 .cursor_docs
 .env
-
-.gemini/

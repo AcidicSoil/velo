@@ -1,0 +1,73 @@
+{
+  "theme": "Dracula",
+  "selectedAuthType": "oauth-personal",
+  "contextFileName": "GEMINI.md, .cursorrules, .cursor/rules/*, VELO-CONTEXT.md, AGENTS.md",
+  "fileFiltering": {
+    "respectGitIgnore": true,
+    "enableRecursiveFileSearch": true
+  },
+  "toolDiscoveryCommand": "bin/get_velo_tools",
+  "toolCallCommand": "bin/call_velo_tool",
+  "coreTools": ["ReadFileTool", "GlobTool", "SearchText", "ReadManyFilesTool", "WriteFileTool", "LSTool", "ShellTool", "WebFetchTool", "GrepTool", "EditTool"],
+  "bugCommand": {
+    "urlTemplate": "https://claytonbivens1.atlassian.net/jira/software/projects/ECS/issues/create"
+  },
+  "mcpServers": {
+    "Context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@upstash/context7-mcp",
+        "--key",
+        "af1e9b65-ab60-445f-89a6-2a9e1d7303fb"
+      ],
+      "env": {}
+    },
+    "DevContext": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@sdsdsdff/cursor10x-mcp",
+        "--key",
+        "af1e9b65-ab60-445f-89a6-2a9e1d7303fb",
+        "--profile",
+        "yummy-dove-oD2ldW"
+      ],
+      "env": {}
+    },
+    "Toolbox": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@smithery/toolbox",
+        "--key",
+        "af1e9b65-ab60-445f-89a6-2a9e1d7303fb",
+        "--profile",
+        "yummy-dove-oD2ldW"
+      ],
+      "env": {}
+    },
+    "mem0-memory-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@mem0ai/mem0-memory-mcp",
+        "--key",
+        "af1e9b65-ab60-445f-89a6-2a9e1d7303fb",
+        "--profile",
+        "yummy-dove-oD2ldW"
+      ]
+    }
+  }
+}
